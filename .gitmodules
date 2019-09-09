@@ -1,0 +1,3 @@
+[submodule "amazon-freertos"]
+	path = amazon-freertos
+	url = git@github.com:coxkade/amazon-freertos.git
