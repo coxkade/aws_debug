@@ -24,7 +24,7 @@ endif
 
 
 
-.PHONY: all clean rm_dir flash config menuconfig iconconfig print_test conf_gen disassembly
+.PHONY: all clean rm_dir flash config menuconfig iconconfig print_test conf_gen disassembly monitor
 
 all: $(config_file)
 	@echo $(build_message)
@@ -46,13 +46,15 @@ disassembly: $(config_file)
 	@echo $(build_message)
 	AFR_TOOLCHAIN_PATH=$(afs_path) $(builder) -C $(build_dir) disassembly
 
+monitor: $(config_file)
+	AFR_TOOLCHAIN_PATH=$(afs_path) $(builder) -C $(build_dir) monitor
+
 rm_dir: $(build_dir)
 	@echo $(build_message)
 	$(RM) -rf $(build_dir)
 
 config: $(build_dir) 
 	cmake -S . -B build ${generator} -DCMAKE_TOOLCHAIN_FILE=amazon-freertos/tools/cmake/toolchains/xtensa-esp32.cmake
-	# AFR_TOOLCHAIN_PATH=$(afs_path) cmake --graphviz=$(graph_dir)/test.dot -S $(current_dir) -B $(build_dir) ${generator} -DCMAKE_TOOLCHAIN_FILE=$(current_dir)/build_helpers/esp-toolchain.cmake
 
 conf_gen: $(build_dir) $(graph_dir)
 

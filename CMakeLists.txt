@@ -7,6 +7,7 @@ set(AFR_BOARD espressif.esp32_devkitc CACHE INTERNAL "")
 
 add_executable(kade_app main.c)
 set(IDF_PROJECT_EXECUTABLE kade_app)
+set(AWS_EXTERNAL_BUILD TRUE) #Set this value so Kades Workaround for the BT source overlap is used.
 
 add_subdirectory(amazon-freertos)
 
