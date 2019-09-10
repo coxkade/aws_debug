@@ -146,7 +146,6 @@ static void prvMiscInitialization( void )
 #if BLE_ENABLED
 
     #if CONFIG_NIMBLE_ENABLED == 1
-    #error "Nimble Enabled"
         esp_err_t prvBLEStackInit( void )
         {
             /* Initialize BLE */

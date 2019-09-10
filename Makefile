@@ -21,6 +21,11 @@ endif
  endif
 
  afs_path := $(shell dirname $(X_GCC))
+ ifeq ($(UNAME_S),Darwin)
+	mon_port=/dev/cu.SLAB_USBtoUART
+else
+	mon_port=/dev/ttyUSB0
+endif
 
 
 
@@ -47,7 +52,7 @@ disassembly: $(config_file)
 	AFR_TOOLCHAIN_PATH=$(afs_path) $(builder) -C $(build_dir) disassembly
 
 monitor: $(config_file)
-	AFR_TOOLCHAIN_PATH=$(afs_path) $(builder) -C $(build_dir) monitor
+	ESPPORT=${mon_port} AFR_TOOLCHAIN_PATH=$(afs_path) $(builder) -C $(build_dir) monitor
 
 rm_dir: $(build_dir)
 	@echo $(build_message)
