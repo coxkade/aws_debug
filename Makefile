@@ -41,7 +41,7 @@ clean: $(config_file)
 
 flash: $(config_file)
 	@echo $(build_message)
-	AFR_TOOLCHAIN_PATH=$(afs_path) $(builder) -C $(build_dir) flash
+	ESPPORT=${mon_port} AFR_TOOLCHAIN_PATH=$(afs_path) $(builder) -C $(build_dir) flash
 
 menuconfig: $(config_file)
 	@echo $(build_message)
