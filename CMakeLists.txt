@@ -29,6 +29,7 @@ PRIVATE AFR::mqtt
 PRIVATE AFR::freertos_plus_tcp
 PRIVATE AFR::wifi
 PRIVATE AFR::utils
+PRIVATE AFR::demo_mqtt
 )
 
 add_custom_command(

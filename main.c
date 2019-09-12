@@ -77,7 +77,6 @@ int app_main( void )
 {
     /* Perform any hardware initialization that does not require the RTOS to be
      * running.  */
-
     prvMiscInitialization();
 
     if( SYSTEM_Init() == pdPASS )
@@ -102,7 +101,7 @@ int app_main( void )
             ESP_ERROR_CHECK( esp_bt_controller_mem_release( ESP_BT_MODE_BLE ) );
         #endif /* if BLE_ENABLED */
         /* Run all demos. */
-        // DEMO_RUNNER_RunDemos();
+        DEMO_RUNNER_RunDemos();
     }
 
     /* Start the scheduler.  Initialization that requires the OS to be running,
@@ -119,7 +118,6 @@ static void prvMiscInitialization( void )
 {
     /* Initialize NVS */
     esp_err_t ret = nvs_flash_init();
-
     if( ( ret == ESP_ERR_NVS_NO_FREE_PAGES ) || ( ret == ESP_ERR_NVS_NEW_VERSION_FOUND ) )
     {
         ESP_ERROR_CHECK( nvs_flash_erase() );
