@@ -84,24 +84,24 @@ int app_main( void )
         /* A simple example to demonstrate key and certificate provisioning in
          * microcontroller flash using PKCS#11 interface. This should be replaced
          * by production ready key provisioning mechanism. */
-        // vDevModeKeyProvisioning();
+        vDevModeKeyProvisioning();
 
         #if BLE_ENABLED
             /* Initialize BLE. */
-            // if( prvBLEStackInit() != ESP_OK )
-            // {
-            //     configPRINTF( ( "Failed to initialize the bluetooth stack\n " ) );
+            if( prvBLEStackInit() != ESP_OK )
+            {
+                configPRINTF( ( "Failed to initialize the bluetooth stack\n " ) );
 
-            //     while( 1 )
-            //     {
-            //     }
-            // }
+                while( 1 )
+                {
+                }
+            }
         #else
             ESP_ERROR_CHECK( esp_bt_controller_mem_release( ESP_BT_MODE_CLASSIC_BT ) );
             ESP_ERROR_CHECK( esp_bt_controller_mem_release( ESP_BT_MODE_BLE ) );
         #endif /* if BLE_ENABLED */
         /* Run all demos. */
-        // DEMO_RUNNER_RunDemos();
+        DEMO_RUNNER_RunDemos();
     }
 
     /* Start the scheduler.  Initialization that requires the OS to be running,
@@ -117,7 +117,6 @@ extern void vApplicationIPInit( void );
 static void prvMiscInitialization( void )
 {
     /* Initialize NVS */
-    // esp_err_t ret = ESP_OK;
     esp_err_t ret = nvs_flash_init();
     if( ( ret == ESP_ERR_NVS_NO_FREE_PAGES ) || ( ret == ESP_ERR_NVS_NEW_VERSION_FOUND ) )
     {
