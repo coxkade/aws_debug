@@ -1,6 +1,8 @@
 
 cmake_minimum_required(VERSION 3.13)
 
+set(CMAKE_BUILD_TYPE Debug)
+
 project(kade_app)
 
 set(AFR_BOARD espressif.esp32_devkitc CACHE INTERNAL "")
@@ -9,12 +11,16 @@ add_executable(kade_app main.c)
 set(IDF_PROJECT_EXECUTABLE kade_app)
 set(AWS_EXTERNAL_BUILD TRUE) #Set this value so Kades Workaround for the BT source overlap is used.
 
-add_subdirectory(amazon-freertos)
+get_filename_component(full_path include ABSOLUTE)
+LIST(APPEND local_includes ${full_path})
+get_filename_component(full_path amazon-freertos/demos/network_manager ABSOLUTE)
+LIST(APPEND local_includes ${full_path})
 
-target_include_directories( kade_app
-    PRIVATE include
-    PRIVATE amazon-freertos/demos/network_manager/
-)
+message(STATUS "local_includes: ${local_includes}")
+
+include_directories(${local_includes})
+
+add_subdirectory(amazon-freertos)
 
 target_sources( kade_app
 PRIVATE amazon-freertos/vendors/nordic/boards/nrf52840-dk/aws_tests/application_code/aws_ble_numericComparison.c
