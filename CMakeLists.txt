@@ -1,42 +1,29 @@
 
 cmake_minimum_required(VERSION 3.13)
+include(esp_cmake_helper.cmake)
 
 set(CMAKE_BUILD_TYPE Debug)
-
-project(kade_app)
-
 set(AFR_BOARD espressif.esp32_devkitc CACHE INTERNAL "")
 
-add_executable(kade_app main.c)
-set(IDF_PROJECT_EXECUTABLE kade_app)
-set(AWS_EXTERNAL_BUILD TRUE) #Set this value so Kades Workaround for the BT source overlap is used.
+get_filename_component(abs_path include ABSOLUTE)
+set(AWS_DEMOS_CONFIG_FILES_LOCATION_OVERRIDE ${abs_path})
 
-get_filename_component(full_path include ABSOLUTE)
-LIST(APPEND local_includes ${full_path})
-get_filename_component(full_path amazon-freertos/demos/network_manager ABSOLUTE)
-LIST(APPEND local_includes ${full_path})
+project(kade_app)
+#create the executable
+esp_override_add_executable(kade_app)
+#add the sources
+esp_override_target_add_source(main.c)
+esp_override_target_add_source(amazon-freertos/demos/wifi_provisioning/aws_wifi_connect_task.c)
+#add the includes
+esp_override_target_add_include(include)
+#add the libraries
+esp_override_target_link_library(AFR::wifi)
+esp_override_target_link_library(AFR::utils)
+esp_override_target_link_library(AFR::ble)
 
-message(STATUS "local_includes: ${local_includes}")
-
-include_directories(${local_includes})
+esp_override_print_vars()
 
 add_subdirectory(amazon-freertos)
-
-target_sources( kade_app
-PRIVATE amazon-freertos/vendors/nordic/boards/nrf52840-dk/aws_tests/application_code/aws_ble_numericComparison.c
-PRIVATE amazon-freertos/demos/demo_runner/aws_demo_network_addr.c
-PRIVATE amazon-freertos/demos/demo_runner/aws_demo.c)
-
-target_link_libraries(kade_app
-PRIVATE AFR::common 
-PRIVATE AFR::freertos
-PRIVATE AFR::dev_mode_key_provisioning
-PRIVATE AFR::mqtt
-PRIVATE AFR::freertos_plus_tcp
-PRIVATE AFR::wifi
-PRIVATE AFR::utils
-PRIVATE AFR::demo_mqtt
-)
 
 add_custom_command(
 	OUTPUT kade_app_dissassembly.txt
@@ -47,3 +34,5 @@ add_custom_command(
 add_custom_target( disassembly 
 	DEPENDS kade_app_dissassembly.txt
 )
+
+esp_override_print_vars()
