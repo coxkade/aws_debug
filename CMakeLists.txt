@@ -25,6 +25,10 @@ esp_override_print_vars()
 
 add_subdirectory(amazon-freertos)
 
+list(TRANSFORM AFR_DEMOS_ENABLED PREPEND "AFR::" OUTPUT_VARIABLE demos_list)
+message(STATUS "demos_list: ${demos_list}")
+target_link_libraries(kade_app PRIVATE ${demos_list})
+
 add_custom_command(
 	OUTPUT kade_app_dissassembly.txt
 	COMMAND ${CMAKE_OBJDUMP} "-dwCSl" "-Mintel" "--file-start-context" ${CMAKE_BINARY_DIR}/kade_app > kade_app_dissassembly.txt
